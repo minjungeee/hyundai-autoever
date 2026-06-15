@@ -9,7 +9,8 @@ import HeatmapChart from '@/components/charts/HeatmapChart'
 import PerformanceChart from '@/components/charts/PerformanceChart'
 import DataTable from '@/components/DataTable'
 import AddRecordModal from '@/components/AddRecordModal'
-import { Plus, Download, Upload, BarChart2, TableIcon, Activity } from 'lucide-react'
+import InsightPanel from '@/components/InsightPanel'
+import { Plus, Download, Upload, BarChart2, TableIcon, Activity, Sparkles } from 'lucide-react'
 
 const CURRENT_YEAR = new Date().getFullYear()
 const YEARS = [CURRENT_YEAR, CURRENT_YEAR - 1, CURRENT_YEAR - 2]
@@ -25,6 +26,7 @@ export default function DashboardPage() {
   const [tab, setTab] = useState<Tab>('overview')
   const [showModal, setShowModal] = useState(false)
   const [uploading, setUploading] = useState(false)
+  const [showInsight, setShowInsight] = useState(false)
 
   const load = useCallback(async () => {
     setLoading(true)
@@ -161,6 +163,11 @@ export default function DashboardPage() {
               <Download size={14} />
               Excel 다운로드
             </button>
+            <button onClick={() => setShowInsight(true)}
+              className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium bg-gradient-to-r from-[#002C5F] to-blue-500 text-white hover:opacity-90 transition-opacity shadow-sm">
+              <Sparkles size={14} />
+              AI 인사이트
+            </button>
             <button onClick={() => setShowModal(true)}
               className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium bg-[#002C5F] text-white hover:bg-[#003d80] transition-colors">
               <Plus size={14} />
@@ -197,6 +204,9 @@ export default function DashboardPage() {
 
       {showModal && (
         <AddRecordModal year={year} quarter={quarter} onClose={() => setShowModal(false)} onSave={handleAdd} />
+      )}
+      {showInsight && (
+        <InsightPanel records={records} year={year} quarter={quarter} onClose={() => setShowInsight(false)} />
       )}
     </div>
   )
